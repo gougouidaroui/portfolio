@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+    interface FormData {
+        name: string;
+        email: string;
+        subject: string;
+        message: string;
+    }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     subject: '',
@@ -20,15 +26,30 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
+    function handleField(field:string) {
+        if (field === "name"){
+        return formData.name
+        }
+        else if (field === "email"){
+        return formData.email}
+        else if (field === "subject"){
+        return formData.subject}
+        else if (field === "message"){
+        return formData.message}
+        else {
+            console.log("Form wrong");
+        }
 
-  const handleSubmit = (e) => {
+    }
+
+  const handleSubmit = (e:any) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
     alert('Form submitted! (Add your form handling logic here)');
@@ -41,7 +62,7 @@ function App() {
     });
   };
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId:any) => {
     document.getElementById(sectionId)?.scrollIntoView({
       behavior: 'smooth'
     });
@@ -393,7 +414,7 @@ function App() {
                     id={field.name}
                     name={field.name}
                     className="form-input"
-                    value={formData[field.name]}
+                    value={handleField(field.name)}
                     onChange={handleInputChange}
                     required
                   />
@@ -406,7 +427,7 @@ function App() {
                   id="message"
                   name="message"
                   className="form-textarea"
-                  rows="5"
+                  rows={5}
                   value={formData.message}
                   onChange={handleInputChange}
                   required
